@@ -11,11 +11,6 @@ import { useCallback } from "react";
 import Particles from "react-particles";
 import { loadFull } from "tsparticles";
 import { useState } from "react";
-import Clarifai from "clarifai";
-
-// const app = new Clarifai.App({
-//   apiKey: "4626bb001aec49db8a3f14d57ce1543c",
-// });
 
 const USER_ID = "yussaaa";
 // Your PAT (Personal Access Token) can be found in the portal under Authentification
