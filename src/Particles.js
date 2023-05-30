@@ -19,7 +19,7 @@ const options = {
     },
     modes: {
       push: {
-        quantity: 40,
+        quantity: 30,
       },
       repulse: {
         distance: 200,
