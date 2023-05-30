@@ -80,9 +80,11 @@ function App() {
   const onButtonClick = (event) => {
     setButtonClick(console.log("Submit Clicked"));
 
-    setButtonClick({ img_url: state.input });
-
     const IMG_URL = state.input;
+
+    setButtonClick({ img_url: IMG_URL });
+
+    // console.log(button.img_url);
 
     setButtonClick(
       fetch(
@@ -93,7 +95,7 @@ function App() {
           "/outputs",
         clarifaiReturnRequestOption(IMG_URL)
       )
-        .then((response) => response.json())
+        .then((response) => getFaceLocation(response))
         .then((result) => console.log(result))
         .catch((error) => console.log("error", error))
     );
