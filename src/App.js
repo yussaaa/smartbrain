@@ -75,6 +75,7 @@ function App() {
   const [button, setButtonClick] = useState({ img_url: "" });
   const [box, setBox] = useState(0);
   const [route, setRoute] = useState("register");
+  const [isSignedIn, setisSignedIn] = useState(false);
 
   const onInputChange = (event) => {
     setState(console.log(event.target.value));
@@ -117,6 +118,11 @@ function App() {
   }, []);
 
   const onRouteChage = (route) => {
+    if (route === "home") {
+      setisSignedIn(true);
+    } else {
+      setisSignedIn(false);
+    }
     setRoute(route);
   };
 
@@ -129,7 +135,7 @@ function App() {
         loaded={particlesLoaded}
         options={options}
       />
-      <Navigation onRouteChange={onRouteChage} />
+      <Navigation onRouteChange={onRouteChage} isSignedIn={isSignedIn} />
       {route === "home" ? (
         <>
           <Logo />
