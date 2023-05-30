@@ -5,6 +5,8 @@ import Rank from "./components/Rank/Rank";
 import ImageLinkform from "./components/ImageLinkForm/ImageLinkForm";
 import options from "./Particles";
 import FaceRecognition from "./components/FaceRecognition/FaceRecognition";
+import SignIn from "./components/SignIn/signIn";
+import Register from "./components/Register/Register";
 
 import "tachyons";
 import { useCallback } from "react";
@@ -56,7 +58,7 @@ const clarifaiReturnRequestOption = (img_url) => {
 function getFaceLocation(result) {
   const clarifaiFace =
     result.outputs[0].data.regions[0].region_info.bounding_box;
-  const image = document.getElementById("inputImage");
+  const image = document.getElementById("inputimage");
   const width = Number(image.width);
   const height = Number(image.height);
 
@@ -69,15 +71,17 @@ function getFaceLocation(result) {
 }
 
 function App() {
-  const [state, setstate] = useState({ input: 0 });
+  const [state, setState] = useState({ input: 0 });
   const [button, setButtonClick] = useState({ img_url: "" });
+  const [box, setBox] = useState(0);
+  const [route, setRoute] = useState("register");
 
   const onInputChange = (event) => {
-    setstate(console.log(event.target.value));
-    setstate({ input: event.target.value });
-    // console.log("state.input", state.input);
+    setState(console.log(event.target.value));
+    setState({ input: event.target.value });
   };
-  const onButtonClick = (event) => {
+
+  const onButtonClick = async (event) => {
     setButtonClick(console.log("Submit Clicked"));
 
     const IMG_URL = state.input;
@@ -86,19 +90,18 @@ function App() {
 
     // console.log(button.img_url);
 
-    setButtonClick(
-      fetch(
-        "https://api.clarifai.com/v2/models/" +
-          MODEL_ID +
-          // "/versions/" +
-          // MODEL_VERSION_ID +
-          "/outputs",
-        clarifaiReturnRequestOption(IMG_URL)
-      )
-        .then((response) => getFaceLocation(response))
-        .then((result) => console.log(result))
-        .catch((error) => console.log("error", error))
-    );
+    try {
+      const response = await fetch(
+        "https://api.clarifai.com/v2/models/" + MODEL_ID + "/outputs",
+        clarifaiReturnRequestOption(state.input)
+      );
+      const data = await response.json();
+      const result = await getFaceLocation(data);
+      setBox(result);
+      console.log(box, data);
+    } catch (error) {
+      console.log("error", error);
+    }
   };
 
   const particlesInit = useCallback(async (engine) => {
@@ -113,6 +116,10 @@ function App() {
     // await console.log(container);
   }, []);
 
+  const onRouteChage = (route) => {
+    setRoute(route);
+  };
+
   return (
     <div className="App">
       <Particles
@@ -122,14 +129,22 @@ function App() {
         loaded={particlesLoaded}
         options={options}
       />
-      <Navigation />
-      <Logo />
-      <Rank />
-      <ImageLinkform
-        onInputChange={onInputChange}
-        onSubmittButtonClick={onButtonClick}
-      />
-      <FaceRecognition img_url={state.input} />
+      <Navigation onRouteChange={onRouteChage} />
+      {route === "home" ? (
+        <>
+          <Logo />
+          <Rank />
+          <ImageLinkform
+            onInputChange={onInputChange}
+            onSubmittButtonClick={onButtonClick}
+          />
+          <FaceRecognition box={box} img_url={state.input} />
+        </>
+      ) : route === "SignIn" ? (
+        <SignIn onRouteChange={onRouteChage} />
+      ) : (
+        <Register onRouteChange={onRouteChage} />
+      )}
     </div>
   );
 }
