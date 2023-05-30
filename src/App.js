@@ -118,7 +118,7 @@ function App() {
         id="tsparticles"
         init={particlesInit}
         loaded={particlesLoaded}
-        options={{ options }}
+        options={options}
       />
       <Navigation />
       <Logo />
