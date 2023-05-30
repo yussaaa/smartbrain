@@ -17,6 +17,62 @@ import Clarifai from "clarifai";
 //   apiKey: "4626bb001aec49db8a3f14d57ce1543c",
 // });
 
+const USER_ID = "yussaaa";
+// Your PAT (Personal Access Token) can be found in the portal under Authentification
+const PAT = "745dac730f244d019776b20b145e1544";
+const APP_ID = "my-first-application";
+// Change these to whatever model and image URL you want to use
+const MODEL_ID = "face-detection";
+const MODEL_VERSION_ID = "6dc7e46bc9124c5c8824be4822abe105";
+
+const clarifaiReturnRequestOption = (img_url) => {
+  ///////////////////////////////////////////////////////////////////////////////////
+  // YOU DO NOT NEED TO CHANGE ANYTHING BELOW THIS LINE TO RUN THIS EXAMPLE
+  ///////////////////////////////////////////////////////////////////////////////////
+
+  const raw = JSON.stringify({
+    user_app_id: {
+      user_id: USER_ID,
+      app_id: APP_ID,
+    },
+    inputs: [
+      {
+        data: {
+          image: {
+            url: img_url,
+          },
+        },
+      },
+    ],
+  });
+
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      Authorization: "Key " + PAT,
+    },
+    body: raw,
+  };
+
+  return requestOptions;
+};
+
+function getFaceLocation(result) {
+  const clarifaiFace =
+    result.outputs[0].data.regions[0].region_info.bounding_box;
+  const image = document.getElementById("inputImage");
+  const width = Number(image.width);
+  const height = Number(image.height);
+
+  return {
+    leftCol: clarifaiFace.left_col * width,
+    topRow: clarifaiFace.top_row * height,
+    rightCol: width - clarifaiFace.right_col * width,
+    bottomRow: height - clarifaiFace.bottom_row * height,
+  };
+}
+
 function App() {
   const [state, setstate] = useState({ input: 0 });
   const [button, setButtonClick] = useState({ img_url: "" });
@@ -26,21 +82,35 @@ function App() {
     setstate({ input: event.target.value });
     // console.log("state.input", state.input);
   };
-  const onButtonClick = async (event) => {
+  const onButtonClick = (event) => {
     setButtonClick(console.log("Submit Clicked"));
-    // app.models
-    //   .predict(
-    //     "6dc7e46bc9124c5c8824be4822abe105",
-    //     "https://samples.clarifai.com/face-det.jpg"
+
+    setButtonClick({ img_url: state.input });
+
+    const IMG_URL = state.input;
+
+    // setButtonClick(
+    //   fetch(
+    //     "https://api.clarifai.com/v2/models/" +
+    //       MODEL_ID +
+    //       // "/versions/" +
+    //       // MODEL_VERSION_ID +
+    //       "/outputs",
+    //     clarifaiReturnRequestOption(IMG_URL)
     //   )
-    //   .then(
-    //     function (resposne) {
-    //       console.log(resposne);
-    //     },
-    //     function (err) {}
-    //   );
-    await setButtonClick({ img_url: state.input });
-    await console.log(button.img_url);
+    //     .then((response) => response.json())
+    //     // .then((response) =>
+    //     //   console.log(
+    //     //     response.outputs[0].data.regions[0].region_info.bounding_box
+    //     //   )
+    //     // )
+
+    //     // .then((resposne) => getFaceLocation(resposne))
+
+    //     .then((result) => console.log(result))
+
+    //     .catch((error) => console.log("error", error))
+    // );
   };
 
   const particlesInit = useCallback(async (engine) => {
