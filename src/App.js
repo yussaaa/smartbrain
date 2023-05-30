@@ -89,28 +89,19 @@ function App() {
 
     const IMG_URL = state.input;
 
-    // setButtonClick(
-    //   fetch(
-    //     "https://api.clarifai.com/v2/models/" +
-    //       MODEL_ID +
-    //       // "/versions/" +
-    //       // MODEL_VERSION_ID +
-    //       "/outputs",
-    //     clarifaiReturnRequestOption(IMG_URL)
-    //   )
-    //     .then((response) => response.json())
-    //     // .then((response) =>
-    //     //   console.log(
-    //     //     response.outputs[0].data.regions[0].region_info.bounding_box
-    //     //   )
-    //     // )
-
-    //     // .then((resposne) => getFaceLocation(resposne))
-
-    //     .then((result) => console.log(result))
-
-    //     .catch((error) => console.log("error", error))
-    // );
+    setButtonClick(
+      fetch(
+        "https://api.clarifai.com/v2/models/" +
+          MODEL_ID +
+          // "/versions/" +
+          // MODEL_VERSION_ID +
+          "/outputs",
+        clarifaiReturnRequestOption(IMG_URL)
+      )
+        .then((response) => response.json())
+        .then((result) => console.log(result))
+        .catch((error) => console.log("error", error))
+    );
   };
 
   const particlesInit = useCallback(async (engine) => {
@@ -141,7 +132,7 @@ function App() {
         onInputChange={onInputChange}
         onSubmittButtonClick={onButtonClick}
       />
-      <FaceRecognition img_url={button.img_url} />
+      <FaceRecognition img_url={state.input} />
     </div>
   );
 }
