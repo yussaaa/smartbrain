@@ -74,7 +74,7 @@ function App() {
   const [state, setState] = useState({ input: 0 });
   const [button, setButtonClick] = useState({ img_url: "" });
   const [box, setBox] = useState(0);
-  const [route, setRoute] = useState("register");
+  const [route, setRoute] = useState("SignIn");
   const [isSignedIn, setisSignedIn] = useState(false);
 
   const onInputChange = (event) => {
