@@ -77,6 +77,19 @@ function App() {
   const [route, setRoute] = useState("SignIn");
   const [isSignedIn, setisSignedIn] = useState(false);
 
+  const [user, setUser] = useState({
+    id: "125",
+    name: "",
+    email: "",
+    password: "",
+    entries: 0,
+    joined: new Date(),
+  });
+
+  const sendUser = (data) => {
+    setUser(data);
+  };
+
   const onInputChange = (event) => {
     setState(console.log(event.target.value));
     setState({ input: event.target.value });
@@ -149,7 +162,7 @@ function App() {
       ) : route === "SignIn" ? (
         <SignIn onRouteChange={onRouteChage} />
       ) : (
-        <Register onRouteChange={onRouteChage} />
+        <Register sendUser={sendUser} onRouteChange={onRouteChage} />
       )}
     </div>
   );
