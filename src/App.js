@@ -109,6 +109,14 @@ function App() {
         "https://api.clarifai.com/v2/models/" + MODEL_ID + "/outputs",
         clarifaiReturnRequestOption(state.input)
       );
+      const counter = await fetch("http://localhost:3006/image", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: user.id,
+        }),
+      });
+      setUser((prevUser) => ({ ...prevUser, entries: prevUser.entries + 1 }));
       const data = await response.json();
       const result = await getFaceLocation(data);
       setBox(result);
@@ -152,7 +160,7 @@ function App() {
       {route === "home" ? (
         <>
           <Logo />
-          <Rank />
+          <Rank entryCount={user.entries} />
           <ImageLinkform
             onInputChange={onInputChange}
             onSubmittButtonClick={onButtonClick}
