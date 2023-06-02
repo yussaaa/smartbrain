@@ -48,7 +48,7 @@ const options = {
         default: "bounce",
       },
       random: false,
-      speed: 6,
+      speed: 2,
       straight: false,
     },
     number: {
@@ -62,10 +62,10 @@ const options = {
       value: 0.5,
     },
     shape: {
-      type: "circle",
+      type: "edge",
     },
     size: {
-      value: { min: 5, max: 5 },
+      value: { min: 0, max: 3 },
     },
   },
   detectRetina: true,
