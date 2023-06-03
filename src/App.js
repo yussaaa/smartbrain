@@ -91,7 +91,6 @@ function App() {
   };
 
   const onInputChange = (event) => {
-    setState(console.log(event.target.value));
     setState({ input: event.target.value });
   };
 
@@ -102,27 +101,25 @@ function App() {
 
     setButtonClick({ img_url: IMG_URL });
 
-    // console.log(button.img_url);
-
     try {
       const response = await fetch(
         "https://api.clarifai.com/v2/models/" + MODEL_ID + "/outputs",
         clarifaiReturnRequestOption(state.input)
       );
-      const counter = await fetch("http://localhost:3006/image", {
+      const count = await fetch("http://localhost:3006/image", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           id: user.id,
         }),
       });
-      setUser((prevUser) => ({ ...prevUser, entries: prevUser.entries + 1 }));
+      const count_value = await count.json();
+      setUser(Object.assign(user, { entries: count_value }));
       const data = await response.json();
       const result = await getFaceLocation(data);
       setBox(result);
-      console.log(box, data);
     } catch (error) {
-      console.log("error", error);
+      console.log("Error, please check the input URL", error);
     }
   };
 
@@ -149,18 +146,18 @@ function App() {
 
   return (
     <div className="App">
-      <Particles
+      {/* <Particles
         className="particles"
         id="tsparticles"
         init={particlesInit}
         loaded={particlesLoaded}
         options={options}
-      />
+      /> */}
       <Navigation onRouteChange={onRouteChage} isSignedIn={isSignedIn} />
       {route === "home" ? (
         <>
           <Logo />
-          <Rank entryCount={user.entries} />
+          <Rank user={user} />
           <ImageLinkform
             onInputChange={onInputChange}
             onSubmittButtonClick={onButtonClick}
@@ -168,7 +165,7 @@ function App() {
           <FaceRecognition box={box} img_url={state.input} />
         </>
       ) : route === "SignIn" ? (
-        <SignIn onRouteChange={onRouteChage} />
+        <SignIn sendUser={sendUser} onRouteChange={onRouteChage} />
       ) : (
         <Register sendUser={sendUser} onRouteChange={onRouteChage} />
       )}
