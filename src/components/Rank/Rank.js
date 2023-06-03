@@ -1,12 +1,13 @@
 import React from "react";
 
-const Rank = ({ entryCount }) => {
+const Rank = ({ user }) => {
+  console.log(user);
   return (
     <div>
       <div className="white f3">
-        {"You are currently valid entry count is: "}
+        {`${user.name} You are currently valid entry count is: `}
       </div>
-      <div className="white f1">{`# ${entryCount}`}</div>
+      <div className="white f1">{`# ${user.entries}`}</div>
     </div>
   );
 };
