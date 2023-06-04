@@ -22,7 +22,7 @@ const options = {
         quantity: 30,
       },
       repulse: {
-        distance: 200,
+        distance: 100,
         duration: 0.4,
       },
     },
@@ -39,7 +39,7 @@ const options = {
       width: 1,
     },
     collisions: {
-      enable: true,
+      enable: false,
     },
     move: {
       direction: "none",
@@ -47,7 +47,7 @@ const options = {
       outModes: {
         default: "bounce",
       },
-      random: false,
+      random: true,
       speed: 2,
       straight: false,
     },
