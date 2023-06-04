@@ -29,7 +29,7 @@ const Register = ({ onRouteChange, sendUser }) => {
     })
       .then((response) => response.json())
       .then((user) => {
-        if (user) {
+        if (user.id) {
           sendUser(user);
           // console.log(user);
           onRouteChange("home");
