@@ -56,6 +56,10 @@ const clarifaiReturnRequestOption = (img_url) => {
 };
 
 function getFaceLocation(result) {
+  /* TODO: 
+    Need to box all the faces on the image
+  */
+
   const clarifaiFace =
     result.outputs[0].data.regions[0].region_info.bounding_box;
   const image = document.getElementById("inputimage");
@@ -78,7 +82,7 @@ function App() {
   const [isSignedIn, setisSignedIn] = useState(false);
 
   const [user, setUser] = useState({
-    id: "125",
+    id: "",
     name: "",
     email: "",
     password: "",
@@ -146,13 +150,13 @@ function App() {
 
   return (
     <div className="App">
-      {/* <Particles
+      <Particles
         className="particles"
         id="tsparticles"
         init={particlesInit}
         loaded={particlesLoaded}
         options={options}
-      /> */}
+      />
       <Navigation onRouteChange={onRouteChage} isSignedIn={isSignedIn} />
       {route === "home" ? (
         <>
