@@ -18,7 +18,7 @@ const Register = ({ onRouteChange, sendUser }) => {
   };
 
   const onSubmitRegister = () => {
-    fetch("http://localhost:3006/register", {
+    fetch("https://vast-hamlet-03824.herokuapp.com/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

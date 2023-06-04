@@ -108,21 +108,27 @@ function App() {
     setButtonClick(state.input);
 
     try {
-      const response = await fetch("http://localhost:3006/imageurl", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          url: buttonClickURL,
-        }),
-      });
-      try {
-        const count = await fetch("http://localhost:3006/image", {
+      const response = await fetch(
+        "https://vast-hamlet-03824.herokuapp.com/imageurl",
+        {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            id: user.id,
+            url: buttonClickURL,
           }),
-        });
+        }
+      );
+      try {
+        const count = await fetch(
+          "https://vast-hamlet-03824.herokuapp.com/image",
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              id: user.id,
+            }),
+          }
+        );
         const count_value = await count.json();
         setUser(Object.assign(user, { entries: count_value }));
         const data = await response.json();
