@@ -108,22 +108,29 @@ function App() {
     setButtonClick(state.input);
 
     try {
-      const response = await fetch(
-        "https://api.clarifai.com/v2/models/" + MODEL_ID + "/outputs",
-        clarifaiReturnRequestOption(buttonClickURL)
-      );
-      const count = await fetch("http://localhost:3006/image", {
+      const response = await fetch("http://localhost:3006/imageurl", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          id: user.id,
+          url: buttonClickURL,
         }),
       });
-      const count_value = await count.json();
-      setUser(Object.assign(user, { entries: count_value }));
-      const data = await response.json();
-      const result = await getFaceLocation(data);
-      setBox(result);
+      try {
+        const count = await fetch("http://localhost:3006/image", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id: user.id,
+          }),
+        });
+        const count_value = await count.json();
+        setUser(Object.assign(user, { entries: count_value }));
+        const data = await response.json();
+        const result = await getFaceLocation(data);
+        setBox(result);
+      } catch (error) {
+        console.log(error);
+      }
     } catch (error) {
       console.log("Error, please check the input URL", error);
     }
@@ -146,7 +153,7 @@ function App() {
       setisSignedIn(true);
     } else if (route == "SignIn") {
       setisSignedIn(false);
-      setUser(initialUser);
+      setButtonClick("");
     }
     setRoute(route);
   };
