@@ -8,14 +8,14 @@ const options = {
   interactivity: {
     events: {
       onClick: {
-        enable: true,
+        enable: false,
         mode: "push",
       },
       onHover: {
         enable: true,
         mode: "repulse",
       },
-      resize: true,
+      resize: false,
     },
     modes: {
       push: {
